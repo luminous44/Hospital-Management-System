@@ -21,6 +21,54 @@ public class HospitalManagementSystem {
             System.out.println("Failed to load driver" + e.getMessage());
             e.printStackTrace();
         }
+        try {
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Patient patient = new Patient(connection, scanner);
+            Doctor doctor = new Doctor(connection, scanner);
+            while (true) {
+                System.out.println("              HOSPITAL MANAGEMENT SYSTEM");
+                System.out.println("=========================================================");
+                System.out.println("1. Add Patient");
+                System.out.println("2. View Patients");
+                System.out.println("3. View Doctors");
+                System.out.println("4. Book Appointment");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice : ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                switch (choice) {
+                    case 1:// add patient
+                        patient.addPatient();
+                        System.out.println("");
+                        break;
+                    case 2: // view patients
+                        patient.viewPatients();
+                        System.out.println("");
+                        break;
+                    case 3: // view Doctors
+                        doctor.viewDoctors();
+                        System.out.println("");
+                        break;
+                    case 4: // Book Appointment
+                        bookAppointment(patient, doctor, connection, scanner);
+                        System.out.println("");
+                        break;
+                    case 5:
+                        System.out.println("Thank you for use our service");
+                        System.out.println("");
+                        return;
+                    default:
+                        System.out.println("Enter valid choice!! Try again");
 
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database connection failed" + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    
 
 }
