@@ -69,6 +69,42 @@ public class HospitalManagementSystem {
 
     }
 
-    
 
+ public static void bookAppointment(Patient patient, Doctor doctor, Connection connection, Scanner scanner) {
+
+        System.out.print("Enter Patient Id : ");
+        int patientId = scanner.nextInt();
+        System.out.print("Enter Doctor Id : ");
+        int doctorId = scanner.nextInt();
+        System.out.print("Enter Appointment Date (YYYY-MM-DD): ");
+        String appointmentDate = scanner.next();
+
+        if (patient.getPatientById(patientId) && doctor.getDoctorById(doctorId)) {
+
+            if (chackDoctorAvailability(doctorId, appointmentDate, connection)) {
+
+                String appQuery = "INSERT INTO appoinments(patient_id,doctor_id,appointment_date) VALUES(?,?,?)";
+                try {
+                    PreparedStatement pre = connection.prepareStatement(appQuery);
+                    pre.setInt(1, patientId);
+                    pre.setInt(2, doctorId);
+                    pre.setString(3, appointmentDate);
+                    int affectedRows = pre.executeUpdate();
+                    if(affectedRows>0){
+                          System.out.println("Appointment Booked Successfully");
+                    }else{
+                        System.out.println("Failed to booked appointment");
+                    }   
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                System.out.println("Doctor is not available on this date!! Please, Try again with new date");
+            }
+
+        } else {
+            System.out.println("Enter valid doctor and patient Id");
+        }   
+    }
 }
