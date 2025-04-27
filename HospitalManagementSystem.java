@@ -1,4 +1,3 @@
-package hospitalmanagementsystem;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -21,6 +20,7 @@ public class HospitalManagementSystem {
             System.out.println("Failed to load driver" + e.getMessage());
             e.printStackTrace();
         }
+
         try {
             Connection connection = DriverManager.getConnection(url, user, password);
             Patient patient = new Patient(connection, scanner);
@@ -69,8 +69,7 @@ public class HospitalManagementSystem {
 
     }
 
-
- public static void bookAppointment(Patient patient, Doctor doctor, Connection connection, Scanner scanner) {
+    public static void bookAppointment(Patient patient, Doctor doctor, Connection connection, Scanner scanner) {
 
         System.out.print("Enter Patient Id : ");
         int patientId = scanner.nextInt();
@@ -107,7 +106,6 @@ public class HospitalManagementSystem {
             System.out.println("Enter valid doctor and patient Id");
         }   
     }
-    // check doctor Availability
     public static boolean chackDoctorAvailability(int dId, String date, Connection connection) {
         String Query = "SELECT COUNT(*) FROM appoinments WHERE doctor_id = ? AND appointment_date = ?";
         try {
@@ -129,4 +127,5 @@ public class HospitalManagementSystem {
 
         return false;
     }
+
 }
