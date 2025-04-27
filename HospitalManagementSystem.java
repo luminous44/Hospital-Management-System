@@ -107,4 +107,26 @@ public class HospitalManagementSystem {
             System.out.println("Enter valid doctor and patient Id");
         }   
     }
+    // check doctor Availability
+    public static boolean chackDoctorAvailability(int dId, String date, Connection connection) {
+        String Query = "SELECT COUNT(*) FROM appoinments WHERE doctor_id = ? AND appointment_date = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(Query);
+            pre.setInt(1, dId);
+            pre.setString(2, date);
+            ResultSet resultSet = pre.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                if (count == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
